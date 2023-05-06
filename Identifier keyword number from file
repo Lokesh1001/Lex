@@ -1,0 +1,18 @@
+%{
+#include<stdio.h>
+%}
+%%
+[a-zA-Z_][a-zA-Z0-9_]+ {printf("%s is an identifier\n",yytext);}
+[0-9]+ {printf("%s is a integer\n",yytext);}
+[0-9]+[.][0-9]+ {printf("%s is a float\n",yytext);}
+[int|float|double|char|string|for|do|while|switch|if|else] {printf("%s is a keyword\n",yytext);}
+[$] {return 0;}
+[/t' '];
+.;
+%%
+int yywrap(){}
+int main(){
+yyin=fopen("file.txt","r");
+yylex();
+return 0;
+}
