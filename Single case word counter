@@ -1,0 +1,29 @@
+// incomplete 
+%{
+#include<stdio.h>
+#include<stdbool.h>
+bool lower=false;
+bool upper=false;
+int c=0;
+%}
+
+%%
+[A-Z] {upper=true;}
+[a-z] {lower=true;}
+[$] return 0;
+[\t' '\n] {if((lower==true && upper==false) || (lower==false && upper==true)){
+c++;
+}
+else{
+lower=true;
+upper=true;
+}
+}
+%%
+int yywrap(){}
+int main(){
+printf("Enter the string ending with $ : \n");
+yylex();
+printf("\nNumber of words with singlecase are : %d\n",c);
+return 0;
+}
