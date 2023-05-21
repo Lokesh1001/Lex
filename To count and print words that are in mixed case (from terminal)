@@ -1,0 +1,39 @@
+%{
+#include<stdio.h>
+#include<stdbool.h>
+#include<string.h>
+int c=0;
+bool flag=false;
+char temp[100];
+char t[1];
+int word_c=0;
+%}
+%%
+[a-zA-Z+] {
+strcpy(t,yytext);
+temp[c]=t[0];
+c++;
+}
+[ \t\n] {
+for(int i=0;i<c;i++){
+if( ((temp[0]>=65 && temp[0]<=90) && (temp[i]>=97 && temp[i]<=122)) || ((temp[0]>=97 && temp[0]<=122) && (temp[i]>=65 && temp[i]<=90)) ){
+flag=true;
+break;
+}
+}
+if(flag==true){
+word_c++;
+for(int j=0;j<c;j++)
+printf("%c",temp[j]);
+printf(" is a mixed case word !\n");
+printf("Number of words that are mixed case now are : %d\n",word_c);
+}
+c=0; // reset the stored word
+flag=false; // reset the flag
+}
+%%
+int yywrap(){}
+int main(){
+yylex();
+return 0;
+}
