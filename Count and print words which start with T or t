@@ -1,0 +1,32 @@
+%{
+#include<stdio.h>
+#include<stdbool.h>
+#include<string.h>
+int c=0;
+bool flag=true;
+char temp[100];
+char t[1];
+int word_c=0;
+%}
+%%
+[a-zA-Z+] {
+strcpy(t,yytext);
+temp[c]=t[0];
+c++;
+}
+[ \t\n] {
+if(temp[0]=='T' || temp[0]=='t'){
+word_c++;
+for(int j=0;j<c;j++)
+printf("%c",temp[j]);
+printf(" starts with t or T !\n");
+printf("Number of words that start with t or T now are : %d\n",word_c);
+}
+c=0; // reset the stored word
+}
+%%
+int yywrap(){}
+int main(){
+yylex();
+return 0;
+}
