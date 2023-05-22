@@ -1,0 +1,64 @@
+%{
+#include<stdio.h>
+#include<stdbool.h>
+#include<string.h>
+// standard input variables
+int c=0;
+char temp[100];
+char t[1];
+// user defined
+char buffer[1000];
+int b_size=0;
+char search[100];
+int word_c=0;
+bool flag=true;
+void writetofile(){
+for(int i=0;i<b_size;i++)
+fputc(buffer[i],yyin);
+}
+%}
+%%
+[a-zA-Z+] {
+strcpy(t,yytext);
+temp[c]=t[0];
+c++;
+}
+[ \t\n] {
+for(int i=0;i<c;i++){
+if(temp[i]!=search[i]){
+flag=false;
+break;
+}
+}
+if(flag){ // matched
+for(int i=c-1;i>=0;i--){
+buffer[b_size]=temp[i];
+b_size++;
+}
+word_c++;
+}
+else{
+for(int i=0;i<c;i++){
+buffer[b_size]=temp[i];
+b_size++;
+}
+}
+c=0;
+flag=true;
+buffer[b_size]=' ';
+b_size++;
+}
+%%
+int yywrap(){}
+int main(int *argc,char * argv[]){
+FILE* FP=fopen(argv[1],"r");
+yyin=FP;
+printf("Enter word to reverse :\n");
+scanf("%s",search);
+yylex();
+fclose(FP);
+yyin=fopen(argv[1],"w");
+writetofile();
+printf("Number of words reverse successfully are : %d\n",word_c);
+return 0;
+}
